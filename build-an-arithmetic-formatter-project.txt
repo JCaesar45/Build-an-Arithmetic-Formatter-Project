@@ -1,0 +1,66 @@
+** start of main.py **
+
+def arithmetic_arranger(problems, show_answers=False):
+    # Validation: Too many problems
+    if len(problems) > 5:
+        return "Error: Too many problems."
+
+    top_line = []
+    bottom_line = []
+    dash_line = []
+    result_line = []
+
+    for problem in problems:
+        parts = problem.split()
+        if len(parts) != 3:
+            return "Error: Each problem must contain two operands and one operator."
+
+        left, operator, right = parts
+
+        # Validation: Operator
+        if operator not in ['+', '-']:
+            return "Error: Operator must be '+' or '-'."
+
+        # Validation: Digits only
+        if not (left.isdigit() and right.isdigit()):
+            return "Error: Numbers must only contain digits."
+
+        # Validation: Max 4 digits
+        if len(left) > 4 or len(right) > 4:
+            return "Error: Numbers cannot be more than four digits."
+
+        # Determine width
+        width = max(len(left), len(right)) + 2
+
+        # Build each line
+        top_line.append(left.rjust(width))
+        bottom_line.append(operator + right.rjust(width - 1))
+        dash_line.append('-' * width)
+
+        # If show_answers is True, calculate and store the result
+        if show_answers:
+            if operator == '+':
+                result = str(int(left) + int(right))
+            else:
+                result = str(int(left) - int(right))
+            result_line.append(result.rjust(width))
+
+    # Combine lines with four spaces between problems
+    arranged_problems = (
+        '    '.join(top_line) + '\n' +
+        '    '.join(bottom_line) + '\n' +
+        '    '.join(dash_line)
+    )
+
+    if show_answers:
+        arranged_problems += '\n' + '    '.join(result_line)
+
+    return arranged_problems
+
+# Example usage
+print(f'\n{arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"])}')
+print(f'\n{arithmetic_arranger(["32 + 8", "1 - 3801", "9999 + 9999", "523 - 49"], True)}')
+
+
+** end of main.py **
+
